@@ -3,7 +3,9 @@ package com.example.service;
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MessageService {
     MessageRepository messageRepository;
     @Autowired

@@ -4,6 +4,7 @@ import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 import com.example.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,11 @@ public class SocialMediaController {
         this.accountService = accountService;
     }
     @PostMapping("/register")
-    public Account addAccount(@RequestBody Account account) {
-        return accountService.createAccount(account);
+    public ResponseEntity<Account> addAccount(@RequestBody Account account) {
+        Account createdAccount = accountService.createAccount(account);
+        if(createdAccount == null) {
+            return ResponseEntity.status(409).body(createdAccount);
+        }
+        return ResponseEntity.status(200).body(createdAccount);
     }
 }
