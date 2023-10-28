@@ -6,6 +6,7 @@ import com.example.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
  * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
+@RestController
 public class SocialMediaController {
-    @Autowired
 	AccountService accountService;
-            
+    
+    @Autowired
+    public SocialMediaController(AccountService accountService) {
+        this.accountService = accountService;
+    }
     @PostMapping("/register")
     public Account addAccount(@RequestBody Account account) {
         return accountService.createAccount(account);
