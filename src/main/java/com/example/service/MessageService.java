@@ -41,4 +41,18 @@ public class MessageService {
         }
         return null;
     }
+
+    public Integer deleteMessageById(Integer message_id) {
+        boolean exists = messageRepository.existsById(message_id);
+        if(exists) {
+            messageRepository.deleteById(message_id);
+            return 1;
+        }
+        return null;
+    }
+
+    public List<Message> getAllMessagesByUser(Integer posted_by) {
+        List<Message> receivedMessages = messageRepository.getMessagesByPostedBy(posted_by);
+        return receivedMessages;
+    }
 }

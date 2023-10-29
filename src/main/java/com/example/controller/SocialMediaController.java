@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,5 +73,17 @@ public class SocialMediaController {
             return ResponseEntity.status(200).body(receivedMessage);
         }
         return ResponseEntity.status(200).body(null);
+    }
+
+    @DeleteMapping("/messages/{message_id}")
+    public ResponseEntity<Integer> removeMessageById(@PathVariable Integer message_id) {
+        Integer response = messageService.deleteMessageById(message_id);
+        return ResponseEntity.status(200).body(response);
+    }
+
+    @GetMapping("/accounts/{account_id}/messages")
+    public ResponseEntity<List<Message>> retrieveAllMessagesByUser(@PathVariable Integer account_id) {
+        List<Message> receivedMessages = messageService.getAllMessagesByUser(account_id);
+        return ResponseEntity.status(200).body(receivedMessages);
     }
 }
