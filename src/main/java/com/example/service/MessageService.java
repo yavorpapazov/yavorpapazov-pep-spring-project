@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MessageService {
@@ -46,6 +47,16 @@ public class MessageService {
         boolean exists = messageRepository.existsById(message_id);
         if(exists) {
             messageRepository.deleteById(message_id);
+            return 1;
+        }
+        return null;
+    }
+
+    @Transactional
+    public Integer updateMessage(Integer message_id, String message_text) {
+        Optional<Message> receivedMessage = messageRepository.findById(message_id);
+        if(receivedMessage.isPresent()) {
+            receivedMessage.get().setMessage_text(message_text);
             return 1;
         }
         return null;
