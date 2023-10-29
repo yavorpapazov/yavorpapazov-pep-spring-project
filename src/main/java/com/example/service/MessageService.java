@@ -5,6 +5,7 @@ import com.example.entity.Message;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,18 @@ public class MessageService {
         Optional<Account> postedByAccount = accountRepository.findById(message.getPosted_by());
         if(postedByAccount.isPresent() && message.getMessage_text() != "") {
             return messageRepository.save(message);
+        }
+        return null;
+    }
+
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
+    }
+
+    public Message getMessageById(Integer message_id) {
+        Optional<Message> receivedMessage = messageRepository.findById(message_id);
+        if(receivedMessage.isPresent()) {
+            return receivedMessage.get();
         }
         return null;
     }
