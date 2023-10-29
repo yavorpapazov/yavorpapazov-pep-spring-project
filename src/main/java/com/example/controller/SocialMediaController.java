@@ -1,10 +1,13 @@
 package com.example.controller;
 
 import com.example.entity.Account;
-import com.example.repository.AccountRepository;
+import com.example.entity.Message;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SocialMediaController {
 	AccountService accountService;
+    MessageService messageService;
     
     @Autowired
-    public SocialMediaController(AccountService accountService) {
+    public SocialMediaController(AccountService accountService, MessageService messageService) {
         this.accountService = accountService;
+        this.messageService = messageService;
     }
+
     @PostMapping("/register")
     public ResponseEntity<Account> addAccount(@RequestBody Account account) {
         Account createdAccount = accountService.createAccount(account);
@@ -30,5 +36,23 @@ public class SocialMediaController {
             return ResponseEntity.status(409).body(createdAccount);
         }
         return ResponseEntity.status(200).body(createdAccount);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Account> verifyAccount(@RequestBody Account account) {
+        Account receivedAccount = accountService.verifyLogin(account);
+        if(receivedAccount != null && account.getPassword().equals(receivedAccount.getPassword())) {
+            return ResponseEntity.status(200).body(receivedAccount);
+        }
+        return ResponseEntity.status(401).body(receivedAccount);
+    }
+
+    @PostMapping("/messages")
+    public ResponseEntity<Message> addMessage(@RequestBody Message message) {
+        Message createdMessage = messageService.createMessage(message);
+        if(createdMessage != null) {
+            return ResponseEntity.status(200).body(createdMessage);
+        }
+        return ResponseEntity.status(400).body(createdMessage);
     }
 }

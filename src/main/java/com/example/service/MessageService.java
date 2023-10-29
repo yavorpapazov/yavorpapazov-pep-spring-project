@@ -1,15 +1,31 @@
 package com.example.service;
 
+import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageService {
     MessageRepository messageRepository;
+    AccountRepository accountRepository;
+    
     @Autowired
-    public MessageService(MessageRepository messageRepository){
+    public MessageService(MessageRepository messageRepository, AccountRepository accountRepository){
         this.messageRepository = messageRepository;
+        this.accountRepository = accountRepository;
+    }
+
+    public Message createMessage(Message message) {
+        Optional<Account> postedByAccount = accountRepository.findById(message.getPosted_by());
+        if(postedByAccount.isPresent() && message.getMessage_text() != "") {
+            return messageRepository.save(message);
+        }
+        return null;
     }
 }

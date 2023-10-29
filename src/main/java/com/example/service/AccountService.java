@@ -11,16 +11,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
     AccountRepository accountRepository;
+    
     @Autowired
-    public AccountService(AccountRepository accountRepository){
+    public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    public Account createAccount(Account account){
+    public Account createAccount(Account account) {
         Optional<Account> accountByUsername = accountRepository.findAccountByUsername(account.getUsername());
         if(accountByUsername.isPresent()) {
             return null;
         }
         return accountRepository.save(account);
+    }
+
+    public Account verifyLogin(Account account) {
+        Optional<Account> accountByUsername = accountRepository.findAccountByUsername(account.getUsername());
+        if(accountByUsername.isPresent()) {
+            return accountByUsername.get();
+        }
+        return null;
     }
 }
