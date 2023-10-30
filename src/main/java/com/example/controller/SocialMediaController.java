@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -93,8 +92,9 @@ public class SocialMediaController {
         Integer response = messageService.updateMessage(message_id, message.getMessage_text());
         if(response == 1) {
             return ResponseEntity.status(200).body(response);
+        } else {
+            return ResponseEntity.status(400).body(null);
         }
-        return ResponseEntity.status(400).body(response);
     }
 
     @GetMapping("/accounts/{account_id}/messages")
